@@ -5,6 +5,8 @@ class cardModel {
   final String desc;
   final String race;
   final String url;
+  final int? level;
+  final String? attribute;
 
   cardModel({
     required this.id,
@@ -13,6 +15,8 @@ class cardModel {
     required this.desc,
     required this.race,
     required this.url,
+    this.level,
+    this.attribute,
   });
 
   factory cardModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +26,8 @@ class cardModel {
         type: json['type'],
         desc: json['desc'],
         race: json['race'],
-        url: json['card_images'][0]['image_url']);
+        url: json['card_images'][0]['image_url'],
+        attribute: json['attribute'],
+        level: json['level']);
   }
 }
