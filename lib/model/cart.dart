@@ -29,10 +29,11 @@ class cardModel {
     List<CardSet> cardSets = [];
     if (json['card_sets'] != null) {
       for (var cardSet in json['card_sets']) {
+        print(cardSet['set_price']);
         cardSets.add(CardSet(
             name: cardSet['set_name'],
             code: cardSet['set_code'],
-            price: cardSet['set_price'] != null
+            price: cardSet['set_price'] != null && cardSet['set_price'].runtimeType == "double"
                 ? double.parse(cardSet['set_price'])
                 : 0));
       }
