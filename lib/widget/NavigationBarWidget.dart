@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_yu_gi_oh/widget/ArchetipeListWidget.dart';
 import 'package:flutter_yu_gi_oh/widget/CardListwidget.dart';
 import 'package:flutter_yu_gi_oh/widget/FavoriteListWidget.dart';
+import 'package:flutter_yu_gi_oh/widget/SetsListWidget.dart';
 
 class NavigationBarWidget extends StatefulWidget {
   const NavigationBarWidget({Key? key}) : super(key: key);
@@ -10,9 +11,14 @@ class NavigationBarWidget extends StatefulWidget {
   State<NavigationBarWidget> createState() => _NavigationBarWidgetState();
 }
 
-class _NavigationBarWidgetState extends State<NavigationBarWidget>{
+class _NavigationBarWidgetState extends State<NavigationBarWidget> {
   int _ongletActif = 0;
-  static final List<Widget> _widgetOptions = <Widget>[CardListWidget(), FavoriteListWidget(),  ArchetipeListWidget()];
+  static final List<Widget> _widgetOptions = <Widget>[
+    CardListWidget(),
+    SetsListWidget(),
+    FavoriteListWidget()
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,17 +35,16 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget>{
             label: 'Cartes',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favoris',
+            icon: Icon(Icons.business),
+            label: 'Sets et packs',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Archétypes',
+            icon: Icon(Icons.favorite),
+            label: 'Favoris',
           ),
         ],
       ),
       body: Container(child: _widgetOptions.elementAt(_ongletActif)),
     );
   }
-
 }

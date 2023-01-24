@@ -46,7 +46,6 @@ class _CardListWidgetState extends State<CardListWidget> {
 
   Future<void> getCard() async {
     final response = await http.get(Uri.parse("$url/cardinfo.php?language=fr"));
-    print(response.statusCode);
     if (response.statusCode == 400) {
       dataCardList = [];
     }
