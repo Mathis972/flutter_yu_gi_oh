@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class cardModel {
   final int id;
   final String name;
@@ -30,10 +28,17 @@ class cardModel {
     Map<CardSeller, double> prices = {};
     if (json['card_sets'] != null) {
       for (var cardSet in json['card_sets']) {
-        print(cardSet['set_price']);
+        var code = cardSet['set_code'];
+        var result;
+        try {
+          result = code.substring(0, code.indexOf('-'));
+        } catch (e) {
+          result = '';
+        }
         cardSets.add(CardSet(
             name: cardSet['set_name'],
             code: cardSet['set_code'],
+            urlImage: "https://images.ygoprodeck.com/images/sets/$result.jpg",
             price: cardSet['set_price'] != null &&
                     cardSet['set_price'].runtimeType == "double"
                 ? double.parse(cardSet['set_price'])
@@ -86,11 +91,28 @@ enum CardSeller {
 class CardSet {
   final String name;
   final String code;
-  final double price;
+  final double? price;
+  final String? urlImage;
+  final num? numCard;
+  final String? releaseDate;
 
   CardSet({
     required this.name,
     required this.code,
-    required this.price,
+    this.price,
+    this.urlImage,
+    this.numCard,
+    this.releaseDate,
   });
+
+  factory CardSet.fromJson(Map<String, dynamic> json) {
+    var code = json['set_code'];
+    return CardSet(
+        name: json['set_name'],
+        code: json['set_code'],
+        urlImage: "https://images.ygoprodeck.com/images/sets/$code.jpg",
+        numCard: json['num_of_cards'],
+        releaseDate: json['tcg_date']
+    );
+  }
 }
