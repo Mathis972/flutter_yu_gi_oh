@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_yu_gi_oh/model/cart.dart';
 import 'package:flutter_yu_gi_oh/widget/cardDetailsWidget.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CardListWidget extends StatefulWidget {
   const CardListWidget({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class _CardListWidgetState extends State<CardListWidget> {
   @override
   final url = "https://db.ygoprodeck.com/api/v7";
   List<cardModel> dataCardList = [];
+  List<String> favList = [];
   List urlCardType = ["assets/Symbol/trap.png", "assets/Symbol/spell.png"];
   TextEditingController nameController = TextEditingController();
   var name = '';
@@ -28,6 +30,16 @@ class _CardListWidgetState extends State<CardListWidget> {
       final card = cardModel.fromJson(jsonConvert);
       setState(() {
         dataCardList.add(card);
+      });
+    }
+  }
+
+  Future<void> getFavList() async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String>? idList = prefs.getStringList('favs');
+    if (idList != null) {
+      setState(() {
+        favList = idList;
       });
     }
   }
@@ -76,6 +88,7 @@ class _CardListWidgetState extends State<CardListWidget> {
 
   Future<void> init() async {
     await getCard();
+    await getFavList();
   }
 
   void initState() {
@@ -149,6 +162,25 @@ class _CardListWidgetState extends State<CardListWidget> {
                     ),
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
+                        onDoubleTap: () async {
+                          final prefs = await SharedPreferences.getInstance();
+                          bool cardInList = false;
+                          if (favList.isNotEmpty) {
+                            cardInList = favList
+                                .contains(dataCardList[index].id.toString());
+                            if (!cardInList) {
+                              favList.add(dataCardList[index].id.toString());
+                            } else {
+                              favList.remove(dataCardList[index].id.toString());
+                            }
+                          } else {
+                            favList.add(dataCardList[index].id.toString());
+                          }
+                          await prefs.setStringList('favs', favList);
+                          setState(() {
+                            favList = favList;
+                          });
+                        },
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => CardDetailsWidget(
@@ -159,12 +191,16 @@ class _CardListWidgetState extends State<CardListWidget> {
                         child: Stack(
                           children: [
                             Container(
+                                color: favList.contains(
+                                        dataCardList[index].id.toString())
+                                    ? Colors.red
+                                    : Colors.white,
                                 child: Padding(
-                              padding:
-                                  const EdgeInsets.only(right: 2.0, left: 2.0),
-                              child: Image.network(
-                                  width: 300, dataCardList[index].url),
-                            )),
+                                  padding: const EdgeInsets.only(
+                                      right: 2.0, left: 2.0),
+                                  child: Image.network(
+                                      width: 300, dataCardList[index].url),
+                                )),
                             ClipRRect(
                                 borderRadius: new BorderRadius.circular(60.0),
                                 child: dataCardList[index].type == "Spell Card"
