@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_yu_gi_oh/widget/ArchetipeListWidget.dart';
 import 'package:flutter_yu_gi_oh/widget/CardListwidget.dart';
-import 'package:flutter_yu_gi_oh/widget/SetListWidget.dart';
+import 'package:flutter_yu_gi_oh/widget/FavoriteListWidget.dart';
 
 class NavigationBarWidget extends StatefulWidget {
   const NavigationBarWidget({Key? key}) : super(key: key);
@@ -12,7 +12,7 @@ class NavigationBarWidget extends StatefulWidget {
 
 class _NavigationBarWidgetState extends State<NavigationBarWidget>{
   int _ongletActif = 0;
-  static final List<Widget> _widgetOptions = <Widget>[CardListWidget(), SetListWidget(), ArchetipeListWidget()];
+  static final List<Widget> _widgetOptions = <Widget>[CardListWidget(), FavoriteListWidget(),  ArchetipeListWidget()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,8 +29,8 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget>{
             label: 'Cartes',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Sets et decks',
+            icon: Icon(Icons.favorite),
+            label: 'Favoris',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.school),

@@ -6,14 +6,14 @@ import 'package:flutter_yu_gi_oh/widget/CardDetailsWidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class SetListWidget extends StatefulWidget {
-  const SetListWidget({super.key});
+class FavoriteListWidget extends StatefulWidget {
+  const FavoriteListWidget({super.key});
 
   @override
-  _SetListWidgetState createState() => _SetListWidgetState();
+  _FavoriteListWidgetState createState() => _FavoriteListWidgetState();
 }
 
-class _SetListWidgetState extends State<SetListWidget> {
+class _FavoriteListWidgetState extends State<FavoriteListWidget> {
   List<String> favList = [];
   List<cardModel> dataCardList = [];
   final url = "https://db.ygoprodeck.com/api/v7";
