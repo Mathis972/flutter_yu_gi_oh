@@ -7,20 +7,20 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import '../model/cart.dart';
 
-class SetListWidget extends StatefulWidget {
-  const SetListWidget({super.key});
+class SetsListWidget extends StatefulWidget {
+  const SetsListWidget({super.key});
 
   @override
-  _SetListWidgetState createState() => _SetListWidgetState();
+  _SetsListWidgetState createState() => _SetsListWidgetState();
 }
 
-class _SetListWidgetState extends State<SetListWidget> {
+class _SetsListWidgetState extends State<SetsListWidget> {
   @override
   final url = "https://db.ygoprodeck.com/api/v7";
   List<CardSet> dataSetList = [];
   TextEditingController nameController = TextEditingController();
   var name = '';
-  Map<String,bool> sortingDesc = {
+  Map<String, bool> sortingDesc = {
     'numCard': false,
     'releaseDate': false,
   };
@@ -65,8 +65,8 @@ class _SetListWidgetState extends State<SetListWidget> {
                     title: const Text('Trier par nom A-Z'),
                     onPressed: (_) {
                       setState(() {
-                        dataSetList.sort((a, b) =>
-                        (a.name?.compareTo(b.name) ?? 0));
+                        dataSetList
+                            .sort((a, b) => (a.name?.compareTo(b.name) ?? 0));
                       });
                     },
                   ),
@@ -74,9 +74,9 @@ class _SetListWidgetState extends State<SetListWidget> {
                     title: const Text('Trier par nom Z-A'),
                     onPressed: (_) {
                       setState(() {
-                        dataSetList.sort((a, b) =>
-                        (b.name?.compareTo(a.name) ?? 0));
-                        });
+                        dataSetList
+                            .sort((a, b) => (b.name?.compareTo(a.name) ?? 0));
+                      });
                     },
                   ),
                   BottomSheetAction(
@@ -84,12 +84,16 @@ class _SetListWidgetState extends State<SetListWidget> {
                     onPressed: (_) {
                       setState(() {
                         sortingDesc.forEach((key, value) {
-                          if(key != 'numCard') sortingDesc[key] = false;
-                          else sortingDesc[key] = !sortingDesc[key]!;
+                          if (key != 'numCard')
+                            sortingDesc[key] = false;
+                          else
+                            sortingDesc[key] = !sortingDesc[key]!;
                         });
-                        dataSetList.sort((a, b) =>
-                        (sortingDesc['numCard'] ?? false ? b.numCard?.compareTo(a.numCard?.toInt() ?? 0) ??
-                            0 : a.numCard?.compareTo(b.numCard?.toInt() ?? 0) ?? 0));
+                        dataSetList.sort((a, b) => (sortingDesc['numCard'] ??
+                                false
+                            ? b.numCard?.compareTo(a.numCard?.toInt() ?? 0) ?? 0
+                            : a.numCard?.compareTo(b.numCard?.toInt() ?? 0) ??
+                                0));
                       });
                     },
                   ),
@@ -98,12 +102,19 @@ class _SetListWidgetState extends State<SetListWidget> {
                     onPressed: (_) {
                       setState(() {
                         sortingDesc.forEach((key, value) {
-                          if(key != 'releaseDate') sortingDesc[key] = false;
-                          else sortingDesc[key] = !sortingDesc[key]!;
+                          if (key != 'releaseDate')
+                            sortingDesc[key] = false;
+                          else
+                            sortingDesc[key] = !sortingDesc[key]!;
                         });
                         dataSetList.sort((a, b) =>
-                        (sortingDesc['releaseDate'] ?? false ? b.releaseDate?.compareTo(a.releaseDate.toString()) ??
-                            0 : a.releaseDate?.compareTo(b.releaseDate.toString()) ?? 0));
+                            (sortingDesc['releaseDate'] ?? false
+                                ? b.releaseDate
+                                        ?.compareTo(a.releaseDate.toString()) ??
+                                    0
+                                : a.releaseDate
+                                        ?.compareTo(b.releaseDate.toString()) ??
+                                    0));
                       });
                     },
                   ),
@@ -134,18 +145,20 @@ class _SetListWidgetState extends State<SetListWidget> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10.0, top: 10.0),
                       child: Text("nombre de cartes: " +
-                          dataSetList[index].numCard.toString() + " cartes"),
+                          dataSetList[index].numCard.toString() +
+                          " cartes"),
                     ),
-                    Text(DateFormat.yMMMMd().format(DateTime.parse(dataSetList[index].releaseDate.toString())).toString()),
+                    Text(DateFormat.yMMMMd()
+                        .format(DateTime.parse(
+                            dataSetList[index].releaseDate.toString()))
+                        .toString()),
                   ],
                 ),
                 trailing: Image.network(
                     errorBuilder: (context, error, stackTrace) {
-                      return const Icon(Icons.error);
-                    },
-                    dataSetList[index].urlImage.toString(),
-                    width: 50,
-                    height: 50),
+                  return const Icon(Icons.error);
+                }, dataSetList[index].urlImage.toString(),
+                    width: 50, height: 50),
               ),
             ),
           );
