@@ -25,54 +25,67 @@ class CardDetailsWidget extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Details'),
       ),
-      body: ListView(children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              margin: const EdgeInsets.only(top: 8.0),
-              child: Image.network(width: 300, card.url),
-            )
-          ],
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/background.jpeg"),
+            fit: BoxFit.cover,
+          ),
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              child: Text(textAlign: TextAlign.center, card.name),
-              padding: EdgeInsets.all(8.0),
-            ),
-            Text(card.desc),
-            const Text(textAlign: TextAlign.center, 'Prices'),
-            SfCartesianChart(
-              primaryXAxis: CategoryAxis(),
-              primaryYAxis:
-                  NumericAxis(minimum: 0, maximum: max, interval: max / 4),
-              series: [
-                ColumnSeries(
-                    dataLabelMapper: (datum, index) => '${datum.y}\$',
-                    dataSource: data,
-                    dataLabelSettings: const DataLabelSettings(isVisible: true),
-                    xValueMapper: (_ChartData data, _) => data.x,
-                    yValueMapper: (_ChartData data, _) => data.y)
-              ],
-            ),
-            if (card.sets.isNotEmpty)
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    const Text('Disponible dans ces sets :'),
-                    for (var set in card.sets)
-                      Container(
-                        child: Text(set.name),
-                        padding: EdgeInsets.all(8.0),
-                      )
-                  ])
-          ],
-        ),
-      ]),
+        child: ListView(children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 8.0),
+                child: Image.network(width: 300, card.url),
+              )
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                child: Text(style: TextStyle(color: Colors.white),textAlign: TextAlign.center, card.name),
+                padding: EdgeInsets.all(8.0),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Text(style: TextStyle(color: Colors.white),card.desc),
+              ),
+              const Text(style: TextStyle(color: Colors.white),textAlign: TextAlign.center, 'Prices'),
+              SfCartesianChart(
+                primaryXAxis: CategoryAxis(),
+                primaryYAxis:
+                    NumericAxis(minimum: 0, maximum: max, interval: max / 4),
+                series: [
+                  ColumnSeries(
+                      trackColor: Colors.white,
+                      color: Colors.blue,
+                      dataLabelMapper: (datum, index) => '${datum.y}\$',
+                      dataSource: data,
+                      dataLabelSettings: const DataLabelSettings(isVisible: true, textStyle: TextStyle(color: Colors.white)),
+                      xValueMapper: (_ChartData data, _) => data.x,
+                      yValueMapper: (_ChartData data, _) => data.y)
+                ],
+              ),
+              if (card.sets.isNotEmpty)
+                Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      const Text(style: TextStyle(color: Colors.white),'Disponible dans ces sets :'),
+                      for (var set in card.sets)
+                        Container(
+                          child: Text(style: TextStyle(color: Colors.white), set.name),
+                          padding: EdgeInsets.all(8.0),
+                        )
+                    ])
+            ],
+          ),
+        ]),
+      ),
     );
   }
 }

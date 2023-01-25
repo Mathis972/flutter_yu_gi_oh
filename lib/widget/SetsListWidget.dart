@@ -125,44 +125,58 @@ class _SetsListWidgetState extends State<SetsListWidget> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: dataSetList.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => CardListDetailsSetWidget(
-                  name: dataSetList[index].name,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/background.jpeg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: ListView.builder(
+          itemCount: dataSetList.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => CardListDetailsSetWidget(
+                    name: dataSetList[index].name,
+                  ),
+                ));
+              },
+              child: Card(
+                margin: const EdgeInsets.only(right: 20, left: 20, top: 10),
+                shadowColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
                 ),
-              ));
-            },
-            child: Card(
-              child: ListTile(
-                title: Text(dataSetList[index].name),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0, top: 10.0),
-                      child: Text("nombre de cartes: " +
-                          dataSetList[index].numCard.toString() +
-                          " cartes"),
-                    ),
-                    Text(DateFormat.yMMMMd()
-                        .format(DateTime.parse(
-                            dataSetList[index].releaseDate.toString()))
-                        .toString()),
-                  ],
+                elevation: 10,
+                child: ListTile(
+                  title: Text(dataSetList[index].name),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0, top: 10.0),
+                        child: Text("nombre de cartes: " +
+                            dataSetList[index].numCard.toString() +
+                            " cartes"),
+                      ),
+                      Text(DateFormat.yMMMMd()
+                          .format(DateTime.parse(
+                              dataSetList[index].releaseDate.toString()))
+                          .toString()),
+                    ],
+                  ),
+                  trailing: Image.network(
+                      errorBuilder: (context, error, stackTrace) {
+                    return const Icon(Icons.error);
+                  }, dataSetList[index].urlImage.toString(),
+                      width: 50, height: 50),
                 ),
-                trailing: Image.network(
-                    errorBuilder: (context, error, stackTrace) {
-                  return const Icon(Icons.error);
-                }, dataSetList[index].urlImage.toString(),
-                    width: 50, height: 50),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

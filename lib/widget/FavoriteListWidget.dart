@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_yu_gi_oh/model/cart.dart';
 import 'package:flutter_yu_gi_oh/widget/CardDetailsWidget.dart';
@@ -59,54 +59,80 @@ class _FavoriteListWidgetState extends State<FavoriteListWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Liste des sets'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                AwesomeDialog(
+                  context: context,
+                  dialogType: DialogType.infoReverse,
+                  headerAnimationLoop: true,
+                  animType: AnimType.bottomSlide,
+                  title:
+                      'Double click sur une carte des listes pour les ajouter aux favoris',
+                  reverseBtnOrder: true,
+                  btnOkText: 'Compris',
+                  btnOkOnPress: () {},
+                ).show();
+              },
+              icon: Icon(Icons.info))
+        ],
+        title: const Text('Liste des favoris'),
       ),
-      body: Column(children: [
-        Text('ListCarte'),
-        Text('Cartes favorites ❤️',
-            style: Theme.of(context).textTheme.headline5),
-        Expanded(
-          child: dataCardList != null
-              ? ListView.builder(
-                  itemCount: dataCardList.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onDoubleTap: () async {
-                        final prefs = await SharedPreferences.getInstance();
-                        if (favList.isNotEmpty) {
-                          favList.remove(dataCardList[index].id.toString());
-                        }
-                        await prefs.setStringList('favs', favList);
-                        setState(() {
-                          favList = favList;
-                          dataCardList.remove(dataCardList[index]);
-                        });
-                      },
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CardDetailsWidget(
-                            card: dataCardList[index],
-                          ),
-                        ));
-                      },
-                      child: Stack(
-                        children: [
-                          Container(
-                              child: Padding(
-                            padding:
-                                const EdgeInsets.only(right: 2.0, left: 2.0),
-                            child: Image.network(
-                                width: 100, dataCardList[index].url),
-                          )),
-                        ],
-                      ),
-                    );
-                  },
-                )
-              : Center(child: CircularProgressIndicator()),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/background.jpeg"),
+            fit: BoxFit.cover,
+          ),
         ),
-      ]),
+        child: Column(children: [
+          Expanded(
+            child: dataCardList != null
+                ? GridView.builder(
+                    itemCount: dataCardList.length,
+                    gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: 0.6,
+                      crossAxisCount: 6,
+                      crossAxisSpacing: 0.5,
+                    ),
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onDoubleTap: () async {
+                          final prefs = await SharedPreferences.getInstance();
+                          if (favList.isNotEmpty) {
+                            favList.remove(dataCardList[index].id.toString());
+                          }
+                          await prefs.setStringList('favs', favList);
+                          setState(() {
+                            favList = favList;
+                            dataCardList.remove(dataCardList[index]);
+                          });
+                        },
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CardDetailsWidget(
+                              card: dataCardList[index],
+                            ),
+                          ));
+                        },
+                        child: Stack(
+                          children: [
+                            Container(
+                                child: Padding(
+                              padding:
+                                  const EdgeInsets.only(right: 2.0, left: 2.0),
+                              child: Image.network(
+                                  width: 100, dataCardList[index].url),
+                            )),
+                          ],
+                        ),
+                      );
+                    },
+                  )
+                : Center(child: CircularProgressIndicator()),
+          ),
+        ]),
+      ),
     );
   }
 }
