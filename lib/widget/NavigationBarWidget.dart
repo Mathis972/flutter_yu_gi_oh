@@ -16,35 +16,47 @@ class _NavigationBarWidgetState extends State<NavigationBarWidget> {
   static final List<Widget> _widgetOptions = <Widget>[
     CardListWidget(),
     SetsListWidget(),
-    FavoriteListWidget()
+    FavoriteListWidget(),
+    ArchetipeListWidget(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: Center(
+        child: _widgetOptions.elementAt(_ongletActif),
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _ongletActif, // indice de l'onglet actif
-        onTap: (index) {
-          setState(() {
-            _ongletActif = index;
-          });
-        },
-        items: const [
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Cartes',
+            backgroundColor: Colors.blueGrey,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Sets et packs',
+            icon: Icon(Icons.dashboard),
+            label: 'Sets et Editions',
+            backgroundColor: Colors.blueGrey,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: 'Favoris',
+            backgroundColor: Colors.blueGrey,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+            backgroundColor: Colors.blueGrey,
           ),
         ],
+        currentIndex: _ongletActif,
+        selectedItemColor: Colors.amber[800],
+        onTap: (int index) {
+          setState(() {
+            _ongletActif = index;
+          });
+        },
       ),
-      body: Container(child: _widgetOptions.elementAt(_ongletActif)),
     );
   }
 }
