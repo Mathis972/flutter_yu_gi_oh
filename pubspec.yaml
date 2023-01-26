@@ -42,8 +42,8 @@ dependencies:
   shared_preferences: ^2.0.17
   intl: ^0.18.0
   adaptive_action_sheet: ^2.0.2
-  aesthetic_dialogs: ^0.0.15
   awesome_dialog: ^3.0.2
+  lottie: ^2.2.0
 
 dev_dependencies:
   flutter_test:

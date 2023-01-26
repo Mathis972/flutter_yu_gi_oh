@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_yu_gi_oh/model/cart.dart';
 import 'package:flutter_yu_gi_oh/widget/cardDetailsWidget.dart';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CardListWidget extends StatefulWidget {
@@ -18,6 +20,7 @@ class _CardListWidgetState extends State<CardListWidget> {
   final url = "https://db.ygoprodeck.com/api/v7";
   List<cardModel> dataCardList = [];
   List<String> favList = [];
+  int displayAnim = 0;
   List urlCardType = ["assets/Symbol/trap.png", "assets/Symbol/spell.png"];
   TextEditingController nameController = TextEditingController();
   var name = '';
@@ -183,6 +186,13 @@ class _CardListWidgetState extends State<CardListWidget> {
                               itemBuilder: (BuildContext context, int index) {
                                 return GestureDetector(
                                   onDoubleTap: () async {
+                                    Timer(
+                                        const Duration(seconds: 1),
+                                        () => {
+                                              setState(() {
+                                                displayAnim = 0;
+                                              }),
+                                            });
                                     final prefs =
                                         await SharedPreferences.getInstance();
                                     bool cardInList = false;
@@ -192,6 +202,9 @@ class _CardListWidgetState extends State<CardListWidget> {
                                       if (!cardInList) {
                                         favList.add(
                                             dataCardList[index].id.toString());
+                                        setState(() {
+                                          displayAnim = dataCardList[index].id;
+                                        });
                                       } else {
                                         favList.remove(
                                             dataCardList[index].id.toString());
@@ -199,6 +212,9 @@ class _CardListWidgetState extends State<CardListWidget> {
                                     } else {
                                       favList.add(
                                           dataCardList[index].id.toString());
+                                      setState(() {
+                                        displayAnim = dataCardList[index].id;
+                                      });
                                     }
                                     await prefs.setStringList('favs', favList);
                                     setState(() {
@@ -305,6 +321,10 @@ class _CardListWidgetState extends State<CardListWidget> {
                                               )
                                             : Container(),
                                       ),
+                                      if (displayAnim != 0 &&
+                                          displayAnim == dataCardList[index].id)
+                                        LottieBuilder.network(
+                                            'https://assets10.lottiefiles.com/datafiles/hvAaKBDVLhuV5Wl/data.json'),
                                     ],
                                   ),
                                 );
