@@ -14,7 +14,7 @@ class _ArchetipeListWidgetState extends State<ArchetipeListWidget> {
       appBar: AppBar(
         title: const Text('Liste des archétypes'),
       ),
-      body: Text('Liste des archétypes'),
+      body: const Text('Liste des archétypes'),
     );
   }
 }

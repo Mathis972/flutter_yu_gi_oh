@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_yu_gi_oh/model/cart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -8,7 +7,7 @@ class CardDetailsWidget extends StatelessWidget {
     super.key,
     required this.card,
   });
-  final cardModel card;
+  final CardModel card;
   @override
   Widget build(BuildContext context) {
     List<double> princesList = card.prices.values.toList();
@@ -47,12 +46,12 @@ class CardDetailsWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
-                child: Text(style: TextStyle(color: Colors.white),textAlign: TextAlign.center, card.name),
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
+                child: Text(style: const TextStyle(color: Colors.white),textAlign: TextAlign.center, card.name),
               ),
               Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: Text(style: TextStyle(color: Colors.white),card.desc),
+                child: Text(style: const TextStyle(color: Colors.white),card.desc),
               ),
               const Text(style: TextStyle(color: Colors.white),textAlign: TextAlign.center, 'Prices'),
               SfCartesianChart(
@@ -78,8 +77,8 @@ class CardDetailsWidget extends StatelessWidget {
                       const Text(style: TextStyle(color: Colors.white),'Disponible dans ces sets :'),
                       for (var set in card.sets)
                         Container(
-                          child: Text(style: TextStyle(color: Colors.white), set.name),
-                          padding: EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(style: const TextStyle(color: Colors.white), set.name),
                         )
                     ])
             ],

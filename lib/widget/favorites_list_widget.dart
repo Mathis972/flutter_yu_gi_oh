@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_yu_gi_oh/model/cart.dart';
-import 'package:flutter_yu_gi_oh/widget/CardDetailsWidget.dart';
+import 'package:flutter_yu_gi_oh/widget/card_details_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,7 +15,7 @@ class FavoriteListWidget extends StatefulWidget {
 
 class _FavoriteListWidgetState extends State<FavoriteListWidget> {
   List<String> favList = [];
-  List<cardModel> dataCardList = [];
+  List<CardModel> dataCardList = [];
   final url = "https://db.ygoprodeck.com/api/v7";
 
   Future<void> getFavList() async {
@@ -39,7 +39,7 @@ class _FavoriteListWidgetState extends State<FavoriteListWidget> {
       List<dynamic> jsonList = jsonConvert['data'];
       for (var element in jsonList) {
         setState(() {
-          dataCardList.add(cardModel.fromJson(element));
+          dataCardList.add(CardModel.fromJson(element));
         });
       }
     }
@@ -50,6 +50,7 @@ class _FavoriteListWidgetState extends State<FavoriteListWidget> {
     await getCard();
   }
 
+  @override
   void initState() {
     init();
     super.initState();
@@ -74,12 +75,12 @@ class _FavoriteListWidgetState extends State<FavoriteListWidget> {
                   btnOkOnPress: () {},
                 ).show();
               },
-              icon: Icon(Icons.info))
+              icon: const Icon(Icons.info))
         ],
         title: const Text('Liste des favoris'),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/background.jpeg"),
             fit: BoxFit.cover,
@@ -87,50 +88,44 @@ class _FavoriteListWidgetState extends State<FavoriteListWidget> {
         ),
         child: Column(children: [
           Expanded(
-            child: dataCardList != null
-                ? GridView.builder(
-                    itemCount: dataCardList.length,
-                    gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 0.6,
-                      crossAxisCount: 6,
-                      crossAxisSpacing: 0.5,
+              child: GridView.builder(
+            itemCount: dataCardList.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              childAspectRatio: 0.6,
+              crossAxisCount: 6,
+              crossAxisSpacing: 0.5,
+            ),
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(
+                onDoubleTap: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  if (favList.isNotEmpty) {
+                    favList.remove(dataCardList[index].id.toString());
+                  }
+                  await prefs.setStringList('favs', favList);
+                  setState(() {
+                    favList = favList;
+                    dataCardList.remove(dataCardList[index]);
+                  });
+                },
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CardDetailsWidget(
+                      card: dataCardList[index],
                     ),
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onDoubleTap: () async {
-                          final prefs = await SharedPreferences.getInstance();
-                          if (favList.isNotEmpty) {
-                            favList.remove(dataCardList[index].id.toString());
-                          }
-                          await prefs.setStringList('favs', favList);
-                          setState(() {
-                            favList = favList;
-                            dataCardList.remove(dataCardList[index]);
-                          });
-                        },
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => CardDetailsWidget(
-                              card: dataCardList[index],
-                            ),
-                          ));
-                        },
-                        child: Stack(
-                          children: [
-                            Container(
-                                child: Padding(
-                              padding:
-                                  const EdgeInsets.only(right: 2.0, left: 2.0),
-                              child: Image.network(
-                                  width: 100, dataCardList[index].url),
-                            )),
-                          ],
-                        ),
-                      );
-                    },
-                  )
-                : Center(child: CircularProgressIndicator()),
-          ),
+                  ));
+                },
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 2.0, left: 2.0),
+                      child: Image.network(width: 100, dataCardList[index].url),
+                    ),
+                  ],
+                ),
+              );
+            },
+          )),
         ]),
       ),
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_yu_gi_oh/widget/ArchetipeListWidget.dart';
-import 'package:flutter_yu_gi_oh/widget/CardListwidget.dart';
-import 'package:flutter_yu_gi_oh/widget/FavoriteListWidget.dart';
-import 'package:flutter_yu_gi_oh/widget/SetsListWidget.dart';
+import 'package:flutter_yu_gi_oh/widget/archetype_list_widget.dart';
+import 'package:flutter_yu_gi_oh/widget/card_list_widget.dart';
+import 'package:flutter_yu_gi_oh/widget/favorites_list_widget.dart';
+import 'package:flutter_yu_gi_oh/widget/sets_list_widget.dart';
 
 class NavigationBarWidget extends StatefulWidget {
   const NavigationBarWidget({Key? key}) : super(key: key);
@@ -14,10 +14,10 @@ class NavigationBarWidget extends StatefulWidget {
 class _NavigationBarWidgetState extends State<NavigationBarWidget> {
   int _ongletActif = 0;
   static final List<Widget> _widgetOptions = <Widget>[
-    CardListWidget(),
-    SetsListWidget(),
-    FavoriteListWidget(),
-    ArchetipeListWidget(),
+    const CardListWidget(),
+    const SetsListWidget(),
+    const FavoriteListWidget(),
+    const ArchetipeListWidget(),
   ];
 
   @override

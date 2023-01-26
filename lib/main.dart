@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_yu_gi_oh/widget/NavigationBarWidget.dart';
+import 'package:flutter_yu_gi_oh/widget/navigationbar_widget.dart';
 import 'package:flutter/services.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp
-  ]).then((value) => runApp(MyApp()));
-  runApp(MyApp());
+  ]).then((value) => runApp(const MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: NavigationBarWidget(),
+      home: const NavigationBarWidget(),
     );
   }
 }

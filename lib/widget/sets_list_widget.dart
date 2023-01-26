@@ -1,8 +1,7 @@
 import 'dart:convert';
-
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_yu_gi_oh/widget/cardListDetailsSetWidget.dart';
+import 'package:flutter_yu_gi_oh/widget/card_list_details_set_widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import '../model/cart.dart';
@@ -15,18 +14,17 @@ class SetsListWidget extends StatefulWidget {
 }
 
 class _SetsListWidgetState extends State<SetsListWidget> {
-  @override
   final url = "https://db.ygoprodeck.com/api/v7";
   List<CardSet> dataSetList = [];
   TextEditingController nameController = TextEditingController();
-  var name = '';
+  String name = '';
   Map<String, bool> sortingDesc = {
     'numCard': false,
     'releaseDate': false,
   };
 
   Future<void> loadData() async {
-    final response = await http.get(Uri.parse(url + "/cardsets.php"));
+    final response = await http.get(Uri.parse("$url/cardsets.php"));
     if (response.statusCode == 400) {
       dataSetList = [];
     }
@@ -45,11 +43,13 @@ class _SetsListWidgetState extends State<SetsListWidget> {
     await loadData();
   }
 
+  @override
   void initState() {
     super.initState();
     init();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -66,7 +66,7 @@ class _SetsListWidgetState extends State<SetsListWidget> {
                     onPressed: (_) {
                       setState(() {
                         dataSetList
-                            .sort((a, b) => (a.name?.compareTo(b.name) ?? 0));
+                            .sort((a, b) => (a.name.compareTo(b.name)));
                       });
                     },
                   ),
@@ -75,7 +75,7 @@ class _SetsListWidgetState extends State<SetsListWidget> {
                     onPressed: (_) {
                       setState(() {
                         dataSetList
-                            .sort((a, b) => (b.name?.compareTo(a.name) ?? 0));
+                            .sort((a, b) => (b.name.compareTo(a.name)));
                       });
                     },
                   ),
@@ -84,10 +84,11 @@ class _SetsListWidgetState extends State<SetsListWidget> {
                     onPressed: (_) {
                       setState(() {
                         sortingDesc.forEach((key, value) {
-                          if (key != 'numCard')
+                          if (key != 'numCard') {
                             sortingDesc[key] = false;
-                          else
+                          } else {
                             sortingDesc[key] = !sortingDesc[key]!;
+                          }
                         });
                         dataSetList.sort((a, b) => (sortingDesc['numCard'] ??
                                 false
@@ -102,10 +103,11 @@ class _SetsListWidgetState extends State<SetsListWidget> {
                     onPressed: (_) {
                       setState(() {
                         sortingDesc.forEach((key, value) {
-                          if (key != 'releaseDate')
+                          if (key != 'releaseDate') {
                             sortingDesc[key] = false;
-                          else
+                          } else {
                             sortingDesc[key] = !sortingDesc[key]!;
+                          }
                         });
                         dataSetList.sort((a, b) =>
                             (sortingDesc['releaseDate'] ?? false
@@ -157,14 +159,12 @@ class _SetsListWidgetState extends State<SetsListWidget> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10.0, top: 10.0),
-                        child: Text("nombre de cartes: " +
-                            dataSetList[index].numCard.toString() +
-                            " cartes"),
+                        child: Text("nombre de cartes: ${dataSetList[index].numCard} cartes"),
                       ),
                       dataSetList[index].releaseDate != null ? Text(DateFormat.yMMMMd()
                           .format(DateTime.parse(
                               dataSetList[index].releaseDate.toString()))
-                          .toString()) : Text(""),
+                          .toString()) : const Text(""),
                     ],
                   ),
                   trailing: Image.network(

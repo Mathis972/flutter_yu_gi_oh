@@ -1,4 +1,4 @@
-class cardModel {
+class CardModel {
   final int id;
   final String name;
   final String type;
@@ -10,7 +10,7 @@ class cardModel {
   final int? level;
   final String? attribute;
 
-  cardModel({
+  CardModel({
     required this.id,
     required this.name,
     required this.type,
@@ -23,13 +23,13 @@ class cardModel {
     this.attribute,
   });
 
-  factory cardModel.fromJson(Map<String, dynamic> json) {
+  factory CardModel.fromJson(Map<String, dynamic> json) {
     List<CardSet> cardSets = [];
     Map<CardSeller, double> prices = {};
     if (json['card_sets'] != null) {
       for (var cardSet in json['card_sets']) {
         var code = cardSet['set_code'];
-        var result;
+        String result;
         try {
           result = code.substring(0, code.indexOf('-'));
         } catch (e) {
@@ -66,7 +66,7 @@ class cardModel {
           double.parse(json['card_prices'][0]['tcgplayer_price']);
     }
 
-    return cardModel(
+    return CardModel(
         id: json['id'],
         name: json['name'],
         type: json['type'],
