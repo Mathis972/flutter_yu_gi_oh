@@ -1,26 +1,20 @@
 PODS:
-  - aesthetic_dialogs (0.0.1):
-    - Flutter
   - Flutter (1.0.0)
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
 
 DEPENDENCIES:
-  - aesthetic_dialogs (from `.symlinks/plugins/aesthetic_dialogs/ios`)
   - Flutter (from `Flutter`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
 
 EXTERNAL SOURCES:
-  aesthetic_dialogs:
-    :path: ".symlinks/plugins/aesthetic_dialogs/ios"
   Flutter:
     :path: Flutter
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/ios"
 
 SPEC CHECKSUMS:
-  aesthetic_dialogs: a5f6a847f4820321f7d2eadf80f36d5d558777f8
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   shared_preferences_foundation: 297b3ebca31b34ec92be11acd7fb0ba932c822ca
 

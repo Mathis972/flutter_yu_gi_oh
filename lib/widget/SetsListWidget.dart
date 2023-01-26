@@ -161,10 +161,10 @@ class _SetsListWidgetState extends State<SetsListWidget> {
                             dataSetList[index].numCard.toString() +
                             " cartes"),
                       ),
-                      Text(DateFormat.yMMMMd()
+                      dataSetList[index].releaseDate != null ? Text(DateFormat.yMMMMd()
                           .format(DateTime.parse(
                               dataSetList[index].releaseDate.toString()))
-                          .toString()),
+                          .toString()) : Text(""),
                     ],
                   ),
                   trailing: Image.network(
